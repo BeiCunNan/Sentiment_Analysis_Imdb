@@ -17,7 +17,7 @@
 ### Clone 
 
 ```bash
-git clone https://github.com/BeiCunNan/News_text_classification.git
+git clone https://github.com/BeiCunNan/sentiment_analysis_Imdb.git
 ```
 
 ### Create an anaconda environment
