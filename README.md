@@ -1,4 +1,4 @@
-# News_Text_Classfication
+# Sentiment_Analysis_Imdb
 
 
 
@@ -23,14 +23,14 @@ git clone https://github.com/BeiCunNan/News_text_classification.git
 ### Create an anaconda environment
 
 ```bash
-conda create -n ntc python=3.9
-conda activate ntc
+conda create -n sai python=3.9
+conda activate sai
 pip install -r requirements.txt
 ```
 
 ## Usage
 
 ```bash
-python main.py --method ntc
+python main.py --method sai
 ```
 
