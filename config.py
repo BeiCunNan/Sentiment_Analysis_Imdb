@@ -14,11 +14,12 @@ def get_config():
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--model_name', type=str, default='bert',
                         choices=['bert', 'roberta', 'glove', 'fasttext', 'word2vce', 'elmo', 'gpt'])
-    parser.add_argument('--method_name', type=str, default='gru', choices=['gru', 'lstm', 'bilstm', 'textcnn', 'rnn'])
+    parser.add_argument('--method_name', type=str, default='lstm',
+                        choices=['gru', 'lstm', 'bilstm', 'textcnn', 'rnn', 'bert_transformer'])
 
     '''Optimization'''
-    parser.add_argument('--train_batch_size', type=int, default=16)
-    parser.add_argument('--test_batch_size', type=int, default=64)
+    parser.add_argument('--train_batch_size', type=int, default=8)
+    parser.add_argument('--test_batch_size', type=int, default=32)
     parser.add_argument('--num_epoch', type=int, default=50)
     parser.add_argument('--lr', type=float, default=1e-5)
     parser.add_argument('--weight_decay', type=float, default=0.01)

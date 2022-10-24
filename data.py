@@ -32,6 +32,7 @@ class MyDataset(Dataset):
 # Make tokens for every batch
 def my_collate(batch, tokenizer):
     tokens, label_ids = map(list, zip(*batch))
+
     text_ids = tokenizer(tokens,
                          padding=True,
                          truncation=True,
@@ -45,8 +46,9 @@ def my_collate(batch, tokenizer):
 # Load dataset
 def load_dataset(tokenizer, train_batch_size, test_batch_size, model_name, method_name, workers):
     data = pd.read_csv('datasets.csv', sep=None, header=0, encoding='utf-8', engine='python')
-    labels = list(data['labels'])
-    sentences = list(data['sentences'])
+    len1 = int(len(list(data['labels'])) * 0.1)
+    labels = list(data['labels'])[0:len1]
+    sentences = list(data['sentences'])[0:len1]
     # split train_set and test_set
     tr_sen, te_sen, tr_lab, te_lab = train_test_split(sentences, labels, train_size=0.8)
     # Dataset
@@ -54,8 +56,8 @@ def load_dataset(tokenizer, train_batch_size, test_batch_size, model_name, metho
     test_set = MyDataset(te_sen, te_lab, method_name, model_name)
     # DataLoader
     collate_fn = partial(my_collate, tokenizer=tokenizer)
-    train_loader = DataLoader(train_set, train_batch_size, shuffle=True, num_workers=workers,
+    train_loader = DataLoader(train_set, batch_size=train_batch_size, shuffle=True, num_workers=workers,
                               collate_fn=collate_fn, pin_memory=True)
-    test_loader = DataLoader(test_set, test_batch_size, shuffle=True, num_workers=workers,
+    test_loader = DataLoader(test_set, batch_size=test_batch_size, shuffle=True, num_workers=workers,
                              collate_fn=collate_fn, pin_memory=True)
     return train_loader, test_loader

@@ -5,7 +5,7 @@ from transformers import logging, AutoTokenizer, AutoModel
 
 from config import get_config
 from data import load_dataset
-from model import Transformer
+from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model
 
 
 class Niubility:
@@ -13,6 +13,7 @@ class Niubility:
         self.args = args
         self.logger = logger
         self.logger.info('> creating model {}'.format(args.model_name))
+        # Operate the model
         if args.model_name == 'bert':
             self.tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
             base_model = AutoModel.from_pretrained('bert-base-uncased')
@@ -21,9 +22,19 @@ class Niubility:
             base_model = AutoModel.from_pretrained('roberta-base')
         else:
             raise ValueError('unknown model')
-        if args.model_name in ['bert', 'roberta']:
+        # Operate the method
+        if args.method_name == 'bert_transformer':
             self.Mymodel = Transformer(base_model, args.num_classes)
-            self.Mymodel.to(args.device)
+        elif args.method_name == 'gru':
+            self.Mymodel = Gru_Model(base_model, args.num_classes)
+        elif args.method_name == 'lstm':
+            self.Mymodel = Lstm_Model(base_model, args.num_classes)
+        elif args.method_name == 'bilstm':
+            self.Mymodel = BiLstm_Model(base_model, args.num_classes)
+        else:
+            self.Mymodel = Rnn_Model(base_model, args.num_classes)
+
+        self.Mymodel.to(args.device)
         if args.device.type == 'cuda':
             self.logger.info('> cuda memory allocated: {}'.format(torch.cuda.memory_allocated(args.device.index)))
         self._print_args()
@@ -62,7 +73,7 @@ class Niubility:
             for inputs, targets in tqdm(dataloader, disable=self.args.backend, ascii=' >='):
                 inputs = {k: v.to(self.args.device) for k, v in inputs.items()}
                 targets = targets.to(self.args.device)
-                predicts = self.Mymodel(**inputs)
+                predicts = self.Mymodel(inputs)
                 loss = criterion(predicts, targets)
 
                 test_loss += loss.item() * targets.size(0)
