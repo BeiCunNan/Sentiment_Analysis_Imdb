@@ -59,7 +59,7 @@ class Niubility:
             optimizer.step()
 
             train_loss += loss.item() * targets.size(0)
-            n_correct += (torch.argmax(predicts) == targets).sum().item()
+            n_correct += (torch.argmax(predicts, dim=1) == targets).sum().item()
             n_train += targets.size(0)
 
         return train_loss / n_train, n_correct / n_train
@@ -77,7 +77,7 @@ class Niubility:
                 loss = criterion(predicts, targets)
 
                 test_loss += loss.item() * targets.size(0)
-                n_correct += (torch.argmax(predicts) == targets).sum().item()
+                n_correct += (torch.argmax(predicts, dim=1) == targets).sum().item()
                 n_test += targets.size(0)
 
         return test_loss / n_test, n_correct / n_test

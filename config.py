@@ -14,8 +14,8 @@ def get_config():
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--model_name', type=str, default='bert',
                         choices=['bert', 'roberta', 'glove', 'fasttext', 'word2vce', 'elmo', 'gpt'])
-    parser.add_argument('--method_name', type=str, default='lstm',
-                        choices=['gru', 'lstm', 'bilstm', 'textcnn', 'rnn', 'bert_transformer'])
+    parser.add_argument('--method_name', type=str, default='rnn',
+                        choices=['gru', 'rnn', 'bilstm', 'textcnn', 'rnn', 'bert_transformer'])
 
     '''Optimization'''
     parser.add_argument('--train_batch_size', type=int, default=8)
