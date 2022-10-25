@@ -82,16 +82,28 @@ class Lstm_Model(nn.Module):
 class BiLstm_Model(nn.Module):
     def __init__(self, base_model, num_classes):
         super().__init__()
-
-        self.BiLstm = nn.LSTM(input_size=16,
-                              hidden_size=64,
+        self.base_model = base_model
+        self.num_classes = num_classes
+        # Open the bidirectional
+        self.BiLstm = nn.LSTM(input_size=768,
+                              hidden_size=320,
                               num_layers=1,
-                              batch_first=True)
-        self.Fn = nn.Linear(64 * 2, 2)
+                              batch_first=True,
+                              bidirectional=True)
+        self.fc = nn.Sequential(nn.Dropout(0.5),
+                                nn.Linear(320 * 2, 80),
+                                nn.Linear(80, 20),
+                                nn.Linear(20, self.num_classes),
+                                nn.Softmax(dim=1))
+        for param in base_model.parameters():
+            param.requires_grad = (True)
 
-    def forward(self, datasets):
-        lstm_out, _ = self.Lstm(datasets, None)
-        outputs = self.Fn(lstm_out[:, -1, :])
+    def forward(self, inputs):
+        raw_outputs = self.base_model(**inputs)
+        cls_feats = raw_outputs.last_hidden_state
+        outputs, _ = self.BiLstm(cls_feats)
+        outputs = outputs[:, -1, :]
+        outputs = self.fc(outputs)
         return outputs
 
 
