@@ -14,6 +14,12 @@ article :  [DataPreProcessing](https://beicunnan.blog.csdn.net/article/details/1
 In addition to that, I've also covered the process of experimentation in detail on my blog, which you can take a look at
 if you're interested Experimenttation process
 
+### Result
+
+Since IMDB data volume is very large, we use 10% of the data volume for training. The results are as follows
+
+![image-20221025225039316](C:\Users\大白菜\AppData\Roaming\Typora\typora-user-images\image-20221025225039316.png)
+
 ## Requirement
 
 - Python = 3.9
@@ -22,7 +28,7 @@ if you're interested Experimenttation process
 
 ## Preparation
 
-### Clone 
+### Clone
 
 ```bash
 git clone https://github.com/BeiCunNan/sentiment_analysis_Imdb.git
