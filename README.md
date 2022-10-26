@@ -16,9 +16,9 @@ if you're interested Experimenttation process
 
 ### Result
 
-Since IMDB data volume is very large, we use 10% of the data volume for training. The results are as follows
+Since IMDB data volume is very large, we use 10% and 100% of the data volume for training. The results are as follows
 
-![image](https://user-images.githubusercontent.com/105692522/197813073-6b782d57-43a5-4ec5-9fb3-eca84c5fb53f.png)
+![image](https://user-images.githubusercontent.com/105692522/198008486-59ce736e-cd3c-4aa2-a9b6-5f363d798e1a.png)
 
 
 ## Requirement
