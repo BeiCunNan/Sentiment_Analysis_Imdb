@@ -12,16 +12,14 @@ following
 article :  [DataPreProcessing](https://beicunnan.blog.csdn.net/article/details/127196715?spm=1001.2014.3001.5502)
 
 In addition to that, I've also covered the process of experimentation in detail on my blog, which you can take a look at
-if you're interested Experimenttation process
+if you're interested Experimenttation
+process  [CSDN_IMDB_Sentiment_Analysis](https://blog.csdn.net/ccaoshangfei/article/details/127537953?spm=1001.2014.3001.5501 )
 
 ### Network
 
 The network structure is as follows
 
 ![Github版 IMDB](https://user-images.githubusercontent.com/105692522/198009720-8bfee092-1a10-41dd-9988-f51ef3ef89cb.png)
-
-
-
 
 ### Result
 
