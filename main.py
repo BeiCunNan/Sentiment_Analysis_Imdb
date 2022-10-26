@@ -16,23 +16,27 @@ class Niubility:
         # Operate the model
         if args.model_name == 'bert':
             self.tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+            self.input_size = 768
             base_model = AutoModel.from_pretrained('bert-base-uncased')
         elif args.model_name == 'roberta':
             self.tokenizer = AutoTokenizer.from_pretrained('roberta-base', add_prefix_space=True)
+            self.input_size = 768
             base_model = AutoModel.from_pretrained('roberta-base')
         else:
             raise ValueError('unknown model')
         # Operate the method
-        if args.method_name == 'bert_transformer':
-            self.Mymodel = Transformer(base_model, args.num_classes)
+        if args.method_name == 'fnn':
+            self.Mymodel = Transformer(base_model, args.num_classes, self.input_size)
         elif args.method_name == 'gru':
-            self.Mymodel = Gru_Model(base_model, args.num_classes)
+            self.Mymodel = Gru_Model(base_model, args.num_classes, self.input_size)
         elif args.method_name == 'lstm':
-            self.Mymodel = Lstm_Model(base_model, args.num_classes)
+            self.Mymodel = Lstm_Model(base_model, args.num_classes, self.input_size)
         elif args.method_name == 'bilstm':
-            self.Mymodel = BiLstm_Model(base_model, args.num_classes)
+            self.Mymodel = BiLstm_Model(base_model, args.num_classes, self.input_size)
+        elif args.method_name == 'rnn':
+            self.Mymodel = Rnn_Model(base_model, args.num_classes, self.input_size)
         else:
-            self.Mymodel = Rnn_Model(base_model, args.num_classes)
+            raise ValueError('unknown method')
 
         self.Mymodel.to(args.device)
         if args.device.type == 'cuda':

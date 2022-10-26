@@ -2,11 +2,13 @@ import torch
 from torch import nn
 
 
+# Bert + FNN
 class Transformer(nn.Module):
-    def __init__(self, base_model, num_classes):
+    def __init__(self, base_model, num_classes, input_size):
         super().__init__()
         self.base_model = base_model
         self.num_classes = num_classes
+        self.input_size = input_size
         self.linear = nn.Linear(base_model.config.hidden_size, num_classes)
         self.dropout = nn.Dropout(0.5)
         self.softmax = nn.Softmax()
@@ -24,13 +26,13 @@ class Transformer(nn.Module):
         predicts = self.softmax(self.linear(self.dropout(cls_feats)))
         return predicts
 
-
 class Gru_Model(nn.Module):
-    def __init__(self, base_model, num_classes):
+    def __init__(self, base_model, num_classes, input_size):
         super().__init__()
         self.base_model = base_model
         self.num_classes = num_classes
-        self.Gru = nn.GRU(input_size=768,
+        self.input_size = input_size
+        self.Gru = nn.GRU(input_size=self.input_size,
                           hidden_size=320,
                           num_layers=1,
                           batch_first=True)
@@ -54,11 +56,12 @@ class Gru_Model(nn.Module):
 
 # Try to use the softmax、relu、tanh and logistic
 class Lstm_Model(nn.Module):
-    def __init__(self, base_model, num_classes):
+    def __init__(self, base_model, num_classes, input_size):
         super().__init__()
         self.base_model = base_model
         self.num_classes = num_classes
-        self.Lstm = nn.LSTM(input_size=768,
+        self.input_size = input_size
+        self.Lstm = nn.LSTM(input_size=self.input_size,
                             hidden_size=320,
                             num_layers=1,
                             batch_first=True)
@@ -80,12 +83,13 @@ class Lstm_Model(nn.Module):
 
 
 class BiLstm_Model(nn.Module):
-    def __init__(self, base_model, num_classes):
+    def __init__(self, base_model, num_classes, input_size):
         super().__init__()
         self.base_model = base_model
         self.num_classes = num_classes
+        self.input_size = input_size
         # Open the bidirectional
-        self.BiLstm = nn.LSTM(input_size=768,
+        self.BiLstm = nn.LSTM(input_size=self.input_size,
                               hidden_size=320,
                               num_layers=1,
                               batch_first=True,
@@ -108,11 +112,12 @@ class BiLstm_Model(nn.Module):
 
 
 class Rnn_Model(nn.Module):
-    def __init__(self, base_model, num_classes):
+    def __init__(self, base_model, num_classes, input_size):
         super().__init__()
         self.base_model = base_model
         self.num_classes = num_classes
-        self.Rnn = nn.RNN(input_size=768,
+        self.input_size = input_size
+        self.Rnn = nn.RNN(input_size=self.input_size,
                           hidden_size=320,
                           num_layers=1,
                           batch_first=True)

@@ -12,10 +12,10 @@ def get_config():
     parser = argparse.ArgumentParser()
     '''Base'''
     parser.add_argument('--num_classes', type=int, default=2)
-    parser.add_argument('--model_name', type=str, default='bert',
+    parser.add_argument('--model_name', type=str, default='roberta',
                         choices=['bert', 'roberta', 'glove', 'fasttext', 'word2vce', 'elmo', 'gpt'])
-    parser.add_argument('--method_name', type=str, default='bilstm',
-                        choices=['gru', 'rnn', 'bilstm', 'textcnn', 'lstm', 'bert_transformer'])
+    parser.add_argument('--method_name', type=str, default='lstm',
+                        choices=['gru', 'rnn', 'bilstm', 'textcnn', 'lstm', 'fnn'])
 
     '''Optimization'''
     parser.add_argument('--train_batch_size', type=int, default=8)
