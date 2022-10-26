@@ -13,7 +13,7 @@ class Niubility:
         self.args = args
         self.logger = logger
         self.logger.info('> creating model {}'.format(args.model_name))
-        # Operate the model
+        # Create model
         if args.model_name == 'bert':
             self.tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
             self.input_size = 768

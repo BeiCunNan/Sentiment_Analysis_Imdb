@@ -13,7 +13,7 @@ def get_config():
     '''Base'''
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--model_name', type=str, default='roberta',
-                        choices=['bert', 'roberta', 'glove', 'fasttext', 'word2vce', 'elmo', 'gpt'])
+                        choices=['bert', 'roberta'])
     parser.add_argument('--method_name', type=str, default='lstm',
                         choices=['gru', 'rnn', 'bilstm', 'textcnn', 'lstm', 'fnn'])
 

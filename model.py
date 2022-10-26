@@ -26,6 +26,7 @@ class Transformer(nn.Module):
         predicts = self.softmax(self.linear(self.dropout(cls_feats)))
         return predicts
 
+
 class Gru_Model(nn.Module):
     def __init__(self, base_model, num_classes, input_size):
         super().__init__()
