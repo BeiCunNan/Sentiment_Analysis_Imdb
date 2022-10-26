@@ -18,7 +18,8 @@ if you're interested Experimenttation process
 
 Since IMDB data volume is very large, we use 10% of the data volume for training. The results are as follows
 
-![image-20221025225039316](C:\Users\大白菜\AppData\Roaming\Typora\typora-user-images\image-20221025225039316.png)
+![image](https://user-images.githubusercontent.com/105692522/197813073-6b782d57-43a5-4ec5-9fb3-eca84c5fb53f.png)
+
 
 ## Requirement
 
