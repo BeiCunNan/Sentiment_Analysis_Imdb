@@ -14,6 +14,14 @@ article :  [DataPreProcessing](https://beicunnan.blog.csdn.net/article/details/1
 In addition to that, I've also covered the process of experimentation in detail on my blog, which you can take a look at
 if you're interested Experimenttation process
 
+### Network
+
+The network structure is as follows
+
+![IMDB](https://user-images.githubusercontent.com/105692522/198009057-04a4aeff-cf0c-4137-a739-285a6dcc6b77.png)
+
+
+
 ### Result
 
 Since IMDB data volume is very large, we use 10% and 100% of the data volume for training. The results are as follows
