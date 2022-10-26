@@ -18,7 +18,8 @@ if you're interested Experimenttation process
 
 The network structure is as follows
 
-![IMDB](https://user-images.githubusercontent.com/105692522/198009057-04a4aeff-cf0c-4137-a739-285a6dcc6b77.png)
+![Github版 IMDB](https://user-images.githubusercontent.com/105692522/198009720-8bfee092-1a10-41dd-9988-f51ef3ef89cb.png)
+
 
 
 
