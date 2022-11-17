@@ -11,11 +11,12 @@ from datetime import datetime
 def get_config():
     parser = argparse.ArgumentParser()
     '''Base'''
+
     parser.add_argument('--num_classes', type=int, default=2)
-    parser.add_argument('--model_name', type=str, default='roberta',
+    parser.add_argument('--model_name', type=str, default='bert',
                         choices=['bert', 'roberta'])
-    parser.add_argument('--method_name', type=str, default='lstm',
-                        choices=['gru', 'rnn', 'bilstm', 'textcnn', 'lstm', 'fnn'])
+    parser.add_argument('--method_name', type=str, default='textcnn',
+                        choices=['gru', 'rnn', 'bilstm', 'lstm', 'fnn', 'textcnn'])
 
     '''Optimization'''
     parser.add_argument('--train_batch_size', type=int, default=8)
@@ -43,3 +44,4 @@ def get_config():
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.addHandler(logging.FileHandler(os.path.join('logs', args.log_name)))
     return args, logger
+

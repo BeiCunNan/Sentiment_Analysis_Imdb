@@ -5,7 +5,7 @@ from transformers import logging, AutoTokenizer, AutoModel
 
 from config import get_config
 from data import load_dataset
-from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model
+from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model, TextCNN_Model
 
 
 class Niubility:
@@ -35,6 +35,8 @@ class Niubility:
             self.Mymodel = BiLstm_Model(base_model, args.num_classes, self.input_size)
         elif args.method_name == 'rnn':
             self.Mymodel = Rnn_Model(base_model, args.num_classes, self.input_size)
+        elif args.method_name == 'textcnn':
+            self.Mymodel = TextCNN_Model(base_model, args.num_classes)
         else:
             raise ValueError('unknown method')
 

@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+import torch.nn.functional as F
 
 
 # Bert + FNN
@@ -137,3 +138,44 @@ class Rnn_Model(nn.Module):
         outputs = outputs[:, -1, :]
         outputs = self.fc(outputs)
         return outputs
+
+
+class TextCNN_Model(nn.Module):
+    def __init__(self, base_model, num_classes):
+        super().__init__()
+        self.base_model = base_model
+        self.num_classes = num_classes
+        for param in base_model.parameters():
+            param.requires_grad = (True)
+
+        # Define the hyperparameters
+        self.filter_sizes = [2, 3, 4]
+        self.num_filters = 2
+        self.encode_layer = 12
+
+        # TextCNN
+        self.convs = nn.ModuleList(
+            [nn.Conv2d(in_channels=1, out_channels=self.num_filters,
+                       kernel_size=(K, self.base_model.config.hidden_size)) for K in self.filter_sizes]
+        )
+        self.block = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(self.num_filters * len(self.filter_sizes), self.num_classes),
+            nn.Softmax(dim=1)
+        )
+
+    def conv_pool(self, tokens, conv):
+        tokens = conv(tokens)
+        tokens = F.relu(tokens)
+        tokens = tokens.squeeze(3)
+        tokens = F.max_pool1d(tokens, tokens.size(2))
+        out = tokens.squeeze(2)
+        return out
+
+    def forward(self, inputs):
+        raw_outputs = self.base_model(**inputs)
+        tokens = raw_outputs.last_hidden_state.unsqueeze(1)
+        out = torch.cat([self.conv_pool(tokens, conv) for conv in self.convs],
+                        1)
+        predicts = self.block(out)
+        return predicts

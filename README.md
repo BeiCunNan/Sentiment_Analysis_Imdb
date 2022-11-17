@@ -2,8 +2,8 @@
 
 ## Introduction
 
-I use the word2vec、elmo、gpt、fasttext、glove、bert、roberta totally 7 different models and using the
-gru、lstm、bilstm、textcnn、rnn totally 5 mothods to run on the imdb datasets. Whitch is so useful for the new boy.
+I use the bert、roberta totally 2 different models and using the gru、lstm、bilstm、textcnn、rnn、fnn totally 6 mothods to run
+on the imdb datasets. Whitch is so useful for the fresh man.
 
 ### Dataset
 
@@ -34,6 +34,7 @@ Since IMDB data volume is very large, we use 10% of the data volume for training
 - Python = 3.9
 - torch = 1.11.0
 - numpy = 1.22.3
+- transformers=4.19.2
 
 ## Preparation
 
