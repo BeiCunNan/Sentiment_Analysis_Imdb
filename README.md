@@ -25,7 +25,7 @@ The network structure is as follows
 
 Since IMDB data volume is very large, we use 10% of the data volume for training. The results are as follows
 
-![最终结果](https://user-images.githubusercontent.com/105692522/198865536-3e724bbc-27f1-4656-b27f-25fdbc5b55d3.jpg)
+![Snipaste_2022-11-21_16-04-03](https://user-images.githubusercontent.com/105692522/202997182-75d5eab9-184a-4511-84b7-89af8d3cdf31.jpg)
 
 
 
