@@ -179,3 +179,4 @@ class TextCNN_Model(nn.Module):
                         1)
         predicts = self.block(out)
         return predicts
+
