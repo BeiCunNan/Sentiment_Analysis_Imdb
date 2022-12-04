@@ -19,9 +19,9 @@ def get_config():
                         choices=['gru', 'rnn', 'bilstm', 'lstm', 'fnn', 'textcnn', 'lstm+textcnn'])
 
     '''Optimization'''
-    parser.add_argument('--train_batch_size', type=int, default=8)
-    parser.add_argument('--test_batch_size', type=int, default=32)
-    parser.add_argument('--num_epoch', type=int, default=50)
+    parser.add_argument('--train_batch_size', type=int, default=2)
+    parser.add_argument('--test_batch_size', type=int, default=16)
+    parser.add_argument('--num_epoch', type=int, default=1)
     parser.add_argument('--lr', type=float, default=1e-5)
     parser.add_argument('--weight_decay', type=float, default=0.01)
 
