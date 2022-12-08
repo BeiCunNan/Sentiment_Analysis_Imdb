@@ -13,15 +13,15 @@ def get_config():
     '''Base'''
 
     parser.add_argument('--num_classes', type=int, default=2)
-    parser.add_argument('--model_name', type=str, default='bert',
+    parser.add_argument('--model_name', type=str, default='roberta',
                         choices=['bert', 'roberta'])
-    parser.add_argument('--method_name', type=str, default='lstm+textcnn',
+    parser.add_argument('--method_name', type=str, default='rnn',
                         choices=['gru', 'rnn', 'bilstm', 'lstm', 'fnn', 'textcnn', 'lstm+textcnn'])
 
     '''Optimization'''
     parser.add_argument('--train_batch_size', type=int, default=2)
     parser.add_argument('--test_batch_size', type=int, default=16)
-    parser.add_argument('--num_epoch', type=int, default=1)
+    parser.add_argument('--num_epoch', type=int, default=5)
     parser.add_argument('--lr', type=float, default=1e-5)
     parser.add_argument('--weight_decay', type=float, default=0.01)
 

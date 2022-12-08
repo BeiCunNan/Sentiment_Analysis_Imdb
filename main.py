@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 from transformers import logging, AutoTokenizer, AutoModel
 
+from torchvision import models
 from config import get_config
 from data import load_dataset
 from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model, TextCNN_Model, Transformer_CNN_RNN
@@ -92,6 +93,10 @@ class Niubility:
         return test_loss / n_test, n_correct / n_test
 
     def run(self):
+        # Print the parameters of model
+        # for name, layer in self.Mymodel.named_parameters(recurse=True):
+        #     print(name, layer.shape, sep=" ")
+
         train_dataloader, test_dataloader = load_dataset(tokenizer=self.tokenizer,
                                                          train_batch_size=self.args.train_batch_size,
                                                          test_batch_size=self.args.test_batch_size,
