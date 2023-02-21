@@ -40,6 +40,9 @@ def my_collate(batch, tokenizer):
                          is_split_into_words=True,
                          add_special_tokens=True,
                          return_tensors='pt')
+    # print(1,text_ids['position_ids'])
+    # print(2,text_ids['attention_mask'])
+    # print(3,text_ids['input_ids'])
     return text_ids, torch.tensor(label_ids)
 
 
