@@ -78,7 +78,6 @@ class Niubility:
         test_loss, n_correct, n_test = 0, 0, 0
         # Turn on the eval mode
         self.Mymodel.eval()
-
         with torch.no_grad():
             for inputs, targets in tqdm(dataloader, disable=self.args.backend, ascii=' >='):
                 inputs = {k: v.to(self.args.device) for k, v in inputs.items()}
@@ -95,7 +94,7 @@ class Niubility:
     def run(self):
         # Print the parameters of model
         # for name, layer in self.Mymodel.named_parameters(recurse=True):
-        #     print(name, layer.shape, sep=" ")
+        # print(name, layer.shape, sep=" ")
 
         train_dataloader, test_dataloader = load_dataset(tokenizer=self.tokenizer,
                                                          train_batch_size=self.args.train_batch_size,
