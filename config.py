@@ -1,11 +1,12 @@
+import argparse
+import logging
 import os
+import random
 import sys
 import time
-import torch
-import random
-import logging
-import argparse
 from datetime import datetime
+
+import torch
 
 
 def get_config():
@@ -16,7 +17,8 @@ def get_config():
     parser.add_argument('--model_name', type=str, default='bert',
                         choices=['bert', 'roberta'])
     parser.add_argument('--method_name', type=str, default='fnn',
-                        choices=['gru', 'rnn', 'bilstm', 'lstm', 'fnn', 'textcnn', 'lstm+textcnn'])
+                        choices=['gru', 'rnn', 'bilstm', 'lstm', 'fnn', 'textcnn', 'attention', 'lstm+textcnn',
+                                 'lstm_textcnn_attention'])
 
     '''Optimization'''
     parser.add_argument('--train_batch_size', type=int, default=4)

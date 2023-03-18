@@ -1,6 +1,8 @@
+import math
+
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 # Bert + FNN
@@ -180,6 +182,7 @@ class TextCNN_Model(nn.Module):
         predicts = self.block(out)
         return predicts
 
+
 class Transformer_CNN_RNN(nn.Module):
     def __init__(self, base_model, num_classes):
         super().__init__()
@@ -227,6 +230,115 @@ class Transformer_CNN_RNN(nn.Module):
         cnn_out = torch.cat([self.conv_pool(cnn_tokens, conv) for conv in self.convs],
                             1)  # shape  [batch_size, self.num_filters * len(self.filter_sizes]
         rnn_tokens = raw_outputs.last_hidden_state
+        rnn_outputs, _ = self.lstm(rnn_tokens)
+        rnn_out = rnn_outputs[:, -1, :]
+        # cnn_out --> [batch,300]
+        # rnn_out --> [batch,512]
+        out = torch.cat((cnn_out, rnn_out), 1)
+        predicts = self.block(out)
+        return predicts
+
+
+#
+class Transformer_Attention(nn.Module):
+    def __init__(self, base_model, num_classes):
+        super().__init__()
+        self.base_model = base_model
+        self.num_classes = num_classes
+        for param in base_model.parameters():
+            param.requires_grad = (True)
+
+        # Self-Attention
+        self.key_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self.query_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self.value_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self._norm_fact = 1 / math.sqrt(self.base_model.config.hidden_size)
+
+        self.block = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(768, 128),
+            nn.Linear(128, 16),
+            nn.Linear(16, num_classes),
+            nn.Softmax(dim=1)
+        )
+
+    def forward(self, inputs):
+        raw_outputs = self.base_model(**inputs)
+        tokens = raw_outputs.last_hidden_state
+
+        K = self.key_layer(tokens)
+        Q = self.query_layer(tokens)
+        V = self.value_layer(tokens)
+        attention = nn.Softmax(dim=-1)((torch.bmm(Q, K.permute(0, 2, 1))) * self._norm_fact)
+        attention_output = torch.bmm(attention, V)
+        attention_output = torch.mean(attention_output, dim=1)
+
+        predicts = self.block(attention_output)
+        return predicts
+
+
+class Transformer_CNN_RNN_Attention(nn.Module):
+    def __init__(self, base_model, num_classes):
+        super().__init__()
+        self.base_model = base_model
+        self.num_classes = num_classes
+        for param in base_model.parameters():
+            param.requires_grad = (True)
+
+        # Define the hyperparameters
+        self.filter_sizes = [3, 4, 5]
+        self.num_filters = 100
+
+        # TextCNN
+        self.convs = nn.ModuleList(
+            [nn.Conv2d(in_channels=1, out_channels=self.num_filters,
+                       kernel_size=(K, self.base_model.config.hidden_size)) for K in self.filter_sizes]
+        )
+
+        # LSTM
+        self.lstm = nn.LSTM(input_size=self.base_model.config.hidden_size,
+                            hidden_size=512,
+                            num_layers=1,
+                            batch_first=True)
+        # Self-Attention
+        self.key_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self.query_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self.value_layer = nn.Linear(self.base_model.config.hidden_size, self.base_model.config.hidden_size)
+        self._norm_fact = 1 / math.sqrt(self.base_model.config.hidden_size)
+
+        self.block = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(812, 128),
+            nn.Linear(128, 16),
+            nn.Linear(16, num_classes),
+            nn.Softmax(dim=1)
+        )
+
+    def conv_pool(self, tokens, conv):
+        # x -> [batch,1,text_length,768]
+        tokens = conv(tokens)  # shape [batch_size, out_channels, x.shape[2] - conv.kernel_size[0] + 1, 1]
+        tokens = F.relu(tokens)
+        tokens = tokens.squeeze(3)  # shape [batch_size, out_channels, x.shape[2] - conv.kernel_size[0] + 1]
+        tokens = F.max_pool1d(tokens, tokens.size(2))  # shape[batch, out_channels, 1]
+        out = tokens.squeeze(2)  # shape[batch, out_channels]
+        return out
+
+    def forward(self, inputs):
+        raw_outputs = self.base_model(**inputs)
+        tokens = raw_outputs.last_hidden_state
+        # Self-Attention
+        K = self.key_layer(tokens)
+        Q = self.query_layer(tokens)
+        V = self.value_layer(tokens)
+        attention = nn.Softmax(dim=-1)((torch.bmm(Q, K.permute(0, 2, 1))) * self._norm_fact)
+        attention_output = torch.bmm(attention, V)
+
+        # TextCNN
+        cnn_tokens = attention_output.unsqueeze(1)  # shape [batch_size, 1, max_len, hidden_size]
+        cnn_out = torch.cat([self.conv_pool(cnn_tokens, conv) for conv in self.convs],
+                            1)  # shape  [batch_size, self.num_filters * len(self.filter_sizes]
+
+        rnn_tokens = tokens
         rnn_outputs, _ = self.lstm(rnn_tokens)
         rnn_out = rnn_outputs[:, -1, :]
         # cnn_out --> [batch,300]

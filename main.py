@@ -4,10 +4,10 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 from transformers import logging, AutoTokenizer, AutoModel
 
-from torchvision import models
 from config import get_config
 from data import load_dataset
-from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model, TextCNN_Model, Transformer_CNN_RNN
+from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model, TextCNN_Model, Transformer_CNN_RNN, \
+    Transformer_Attention
 
 
 class Niubility:
@@ -39,8 +39,12 @@ class Niubility:
             self.Mymodel = Rnn_Model(base_model, args.num_classes, self.input_size)
         elif args.method_name == 'textcnn':
             self.Mymodel = TextCNN_Model(base_model, args.num_classes)
+        elif args.method_name == 'attention':
+            self.Mymodel = Transformer_Attention(base_model, args.num_classes)
         elif args.method_name == 'lstm+textcnn':
             self.Mymodel = Transformer_CNN_RNN(base_model, args.num_classes)
+        elif args.method_name == 'lstm_textcnn_attention':
+            self.Mymodel = Transformer_Attention(base_model, args.num_classes)
         else:
             raise ValueError('unknown method')
 
