@@ -7,7 +7,7 @@ from transformers import logging, AutoTokenizer, AutoModel
 from config import get_config
 from data import load_dataset
 from model import Transformer, Gru_Model, BiLstm_Model, Lstm_Model, Rnn_Model, TextCNN_Model, Transformer_CNN_RNN, \
-    Transformer_Attention
+    Transformer_Attention, Transformer_CNN_RNN_Attention
 
 
 class Niubility:
@@ -44,7 +44,7 @@ class Niubility:
         elif args.method_name == 'lstm+textcnn':
             self.Mymodel = Transformer_CNN_RNN(base_model, args.num_classes)
         elif args.method_name == 'lstm_textcnn_attention':
-            self.Mymodel = Transformer_Attention(base_model, args.num_classes)
+            self.Mymodel = Transformer_CNN_RNN_Attention(base_model, args.num_classes)
         else:
             raise ValueError('unknown method')
 
@@ -60,6 +60,7 @@ class Niubility:
 
     def _train(self, dataloader, criterion, optimizer):
         train_loss, n_correct, n_train = 0, 0, 0
+
         # Turn on the train mode
         self.Mymodel.train()
         for inputs, targets in tqdm(dataloader, disable=self.args.backend, ascii='>='):
@@ -75,7 +76,6 @@ class Niubility:
             train_loss += loss.item() * targets.size(0)
             n_correct += (torch.argmax(predicts, dim=1) == targets).sum().item()
             n_train += targets.size(0)
-
         return train_loss / n_train, n_correct / n_train
 
     def _test(self, dataloader, criterion):

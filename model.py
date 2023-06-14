@@ -239,7 +239,6 @@ class Transformer_CNN_RNN(nn.Module):
         return predicts
 
 
-#
 class Transformer_Attention(nn.Module):
     def __init__(self, base_model, num_classes):
         super().__init__()
